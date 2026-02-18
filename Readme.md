@@ -23,3 +23,5 @@ cargo run -p to-do-core --release one two three
 03-to-do/project
 cargo add -p to-do-core clap
 cargo add -p to-do-core clap --features derive
+cargo run -p to-do-core -- --help
+cargo run -p to-do-core -- --first-name Barbambia --last-name Kergudu --age 34
