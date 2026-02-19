@@ -1,25 +1,16 @@
-use clap::Parser;
-/// Simple program for booking
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Args {
-  /// first name of user
-  #[arg(short, long)]
-  first_name: String,
-
-  /// last name of user
-  #[arg(short, long)]
-  last_name: String,
-
-  /// age of the user
-  #[arg(short, long, default_value_t = 1)]
-  age: u8
-}
+// cargo run -p to-do-core
+mod enums;
+mod structs;
+mod api;
+use structs::done::Done;
+use structs::pending::Pending;
 
 fn main() {
-  let args = Args::parse();
+  let done = Done::new("shopping");
+  println!("{}", done.super_struct.title);
+  println!("{}", done.super_struct.status);
 
-  println!("{:?}", args.first_name);
-  println!("{:?}", args.last_name);
-  println!("{:?}", args.age);
+  let pending = Pending::new("laundry");
+  println!("{}", pending.super_struct.title);
+  println!("{}", pending.super_struct.status);
 }
