@@ -1,4 +1,6 @@
 // cargo run -p to-do-core
+// cargo add -p to-do-core clap
+// cargo run --features json-file-storage
 mod api;
 mod enums;
 mod structs;

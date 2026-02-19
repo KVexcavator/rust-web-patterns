@@ -18,12 +18,8 @@ impl fmt::Display for ItemTypes {
 }
 
 pub fn create(title: &str, status: TaskStatus) -> ItemTypes {
-  match status {
-    TaskStatus::PENDING => {
-      ItemTypes::Pending(Pending::new(&title))
-    },
-    TaskStatus::DONE => {
-      ItemTypes::Done(Done::new(&title))
+    match status {
+        TaskStatus::PENDING => ItemTypes::Pending(Pending::new(&title)),
+        TaskStatus::DONE => ItemTypes::Done(Done::new(&title)),
     }
-  }
 }
