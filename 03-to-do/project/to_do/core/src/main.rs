@@ -1,16 +1,10 @@
 // cargo run -p to-do-core
+mod api;
 mod enums;
 mod structs;
-mod api;
-use structs::done::Done;
-use structs::pending::Pending;
+use api::basic_actions::create::create;
 
 fn main() {
-  let done = Done::new("shopping");
-  println!("{}", done.super_struct.title);
-  println!("{}", done.super_struct.status);
-
-  let pending = Pending::new("laundry");
-  println!("{}", pending.super_struct.title);
-  println!("{}", pending.super_struct.status);
+    let to_do_item = create("washing", enums::TaskStatus::PENDING);
+    println!("{}", to_do_item);
 }
