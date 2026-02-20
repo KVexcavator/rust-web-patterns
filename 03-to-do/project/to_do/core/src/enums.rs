@@ -1,9 +1,21 @@
 use std::fmt;
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum TaskStatus {
     DONE,
     PENDING,
+}
+
+impl TaskStatus {
+    pub fn from_string(status: &String)
+    -> Result<TaskStatus, String> {
+        match status.to_uppercase().as_str() {
+            "DONE" => Ok(TaskStatus::DONE),
+            "PENDING" => Ok(TaskStatus::PENDING),
+            _ => Err(format!("Invalid status: {}", status))
+        }
+    }
 }
 
 impl fmt::Display for TaskStatus {
