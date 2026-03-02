@@ -1,6 +1,6 @@
+use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
 pub enum TaskStatus {
@@ -13,12 +13,10 @@ impl TaskStatus {
         match status.to_uppercase().as_str() {
             "DONE" => Ok(TaskStatus::DONE),
             "PENDING" => Ok(TaskStatus::PENDING),
-            _ => Err(
-                NanoServiceError::new(
-                    "Invalid status".to_string(),
-                    NanoServiceErrorStatus::BadRequest
-                )
-            ),
+            _ => Err(NanoServiceError::new(
+                "Invalid status".to_string(),
+                NanoServiceErrorStatus::BadRequest,
+            )),
         }
     }
 }

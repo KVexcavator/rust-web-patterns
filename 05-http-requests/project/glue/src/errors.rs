@@ -43,18 +43,12 @@ impl NanoServiceError {
 impl ResponseError for NanoServiceError {
     fn status_code(&self) -> StatusCode {
         match self.status {
-            NanoServiceErrorStatus::NotFound =>
-                StatusCode::NOT_FOUND,
-            NanoServiceErrorStatus::Forbidden =>
-                StatusCode::FORBIDDEN,
-            NanoServiceErrorStatus::Unknown =>
-                StatusCode::INTERNAL_SERVER_ERROR,
-            NanoServiceErrorStatus::BadRequest =>
-                StatusCode::BAD_REQUEST,
-            NanoServiceErrorStatus::Conflict =>
-                StatusCode::CONFLICT,
-            NanoServiceErrorStatus::Unauthorized =>
-                StatusCode::UNAUTHORIZED
+            NanoServiceErrorStatus::NotFound => StatusCode::NOT_FOUND,
+            NanoServiceErrorStatus::Forbidden => StatusCode::FORBIDDEN,
+            NanoServiceErrorStatus::Unknown => StatusCode::INTERNAL_SERVER_ERROR,
+            NanoServiceErrorStatus::BadRequest => StatusCode::BAD_REQUEST,
+            NanoServiceErrorStatus::Conflict => StatusCode::CONFLICT,
+            NanoServiceErrorStatus::Unauthorized => StatusCode::UNAUTHORIZED,
         }
     }
 
@@ -67,17 +61,14 @@ impl ResponseError for NanoServiceError {
 #[macro_export]
 macro_rules! safe_eject {
     ($e:expr, $err_status:expr) => {
-        $e.map_err(|x| NanoServiceError::new(
-                x.to_string(),
-                $err_status
-            )
-        )
+        $e.map_err(|x| NanoServiceError::new(x.to_string(), $err_status))
     };
     ($e:expr, $err_status:expr, $message_context:expr) => {
-        $e.map_err(|x| NanoServiceError::new(
+        $e.map_err(|x| {
+            NanoServiceError::new(
                 format!("{}: {}", $message_context, x.to_string()),
-                $err_status
+                $err_status,
             )
-        )
+        })
     };
 }

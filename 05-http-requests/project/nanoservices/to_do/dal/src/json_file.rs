@@ -1,10 +1,10 @@
+use glue::errors::{NanoServiceError, NanoServiceErrorStatus};
+use glue::safe_eject;
 use serde::{Serialize, de::DeserializeOwned};
 use std::collections::HashMap;
 use std::env;
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
-use glue::errors::{ NanoServiceError, NanoServiceErrorStatus};
-use glue::safe_eject;
 
 fn get_handle(path: Option<&str>) -> Result<File, NanoServiceError> {
     let path = match path {
@@ -12,18 +12,18 @@ fn get_handle(path: Option<&str>) -> Result<File, NanoServiceError> {
         None => &env::var("JSON_STORE_PATH").unwrap_or("./tasks.json".to_string()),
     };
 
-    safe_eject!(OpenOptions::new()
-        .read(true)
-        .write(true)
-        .create(true)
-        .open(&path),
+    safe_eject!(
+        OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .open(&path),
         NanoServiceErrorStatus::Unknown,
         "Error writing tasks to JSON to file"
     )
 }
 
-pub fn get_all<T: DeserializeOwned>()
--> Result<HashMap<String, T>, NanoServiceError> {
+pub fn get_all<T: DeserializeOwned>() -> Result<HashMap<String, T>, NanoServiceError> {
     let mut file = get_handle(None)?;
     let mut contents = String::new();
 
@@ -42,8 +42,7 @@ pub fn get_all<T: DeserializeOwned>()
     Ok(tasks)
 }
 
-pub fn save_all<T: Serialize>(tasks: &HashMap<String, T>)
--> Result<(), NanoServiceError> {
+pub fn save_all<T: Serialize>(tasks: &HashMap<String, T>) -> Result<(), NanoServiceError> {
     let mut file = get_handle(None)?;
 
     let json = safe_eject!(
@@ -61,32 +60,23 @@ pub fn save_all<T: Serialize>(tasks: &HashMap<String, T>)
     Ok(())
 }
 
-pub fn get_one<T: DeserializeOwned + Clone>(id: &str)
--> Result<T, NanoServiceError> {
+pub fn get_one<T: DeserializeOwned + Clone>(id: &str) -> Result<T, NanoServiceError> {
     let tasks = get_all::<T>()?;
 
     match tasks.get(id) {
         Some(t) => Ok(t.clone()),
-        None => Err(
-        NanoServiceError::new(
-            format!(
-                "Task with id {} not found",
-                id
-            ),
-            NanoServiceErrorStatus::Unknown
-            )
-        )
+        None => Err(NanoServiceError::new(
+            format!("Task with id {} not found", id),
+            NanoServiceErrorStatus::Unknown,
+        )),
     }
 }
 
-pub fn save_one<T>(id: &str, task: &T)
--> Result<(), NanoServiceError>
+pub fn save_one<T>(id: &str, task: &T) -> Result<(), NanoServiceError>
 where
     T: Serialize + DeserializeOwned + Clone,
 {
-    let mut tasks = get_all::<T>().unwrap_or_else(
-        |_| HashMap::new()
-    );
+    let mut tasks = get_all::<T>().unwrap_or_else(|_| HashMap::new());
 
     tasks.insert(id.to_string(), task.clone());
 
@@ -100,6 +90,6 @@ where
     let mut tasks = get_all::<T>().unwrap_or(HashMap::new());
 
     tasks.remove(id);
-    
+
     save_all(&tasks)
 }
