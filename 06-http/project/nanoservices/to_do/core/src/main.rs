@@ -16,12 +16,12 @@ struct Args {
 }
 
 fn main() -> Result<(), NanoServiceError> {
-    let args = Args::parse();
+    // let args = Args::parse();
 
-    let status_enum = TaskStatus::from_string(&args.status)?;
+    // let status_enum = TaskStatus::from_string(&args.status)?;
 
-    let to_do_item = create(&args.title, status_enum)?;
+    // let to_do_item = create(&args.title, status_enum)?;
 
-    println!("{}", to_do_item);
+    // println!("{}", to_do_item);
     Ok(())
 }
