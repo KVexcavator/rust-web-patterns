@@ -23,22 +23,18 @@ fn get_handle(path: Option<&str>) -> Result<File, NanoServiceError> {
     )
 }
 
-fn get_write_handle(path: Option<&str>)
--> Result<File, NanoServiceError> {
+fn get_write_handle(path: Option<&str>) -> Result<File, NanoServiceError> {
     let path = match path {
         Some(p) => p,
-        None => {
-            &env::var("JSON_STORE_PATH").unwrap_or(
-                "./tasks.json".to_string()
-            )
-        }
+        None => &env::var("JSON_STORE_PATH").unwrap_or("./tasks.json".to_string()),
     };
 
-    let file = safe_eject!(OpenOptions::new()
-        .write(true)
-        .create(true)
-        .truncate(true)
-        .open(&path),
+    let file = safe_eject!(
+        OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(&path),
         NanoServiceErrorStatus::Unknown,
         "Error reading JSON file (write handle)"
     )?;
