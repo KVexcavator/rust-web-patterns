@@ -10,6 +10,9 @@ http://localhost:3000/
 ===
 запустить фронт с rust-embed
 cargo run -p ingress
+запустить через скрипт
+sh ingress/scripts/run_server.sh
+локалхост:
 http://localhost:8001/
 ===
 Бекенд Rust:
