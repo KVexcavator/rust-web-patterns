@@ -8,6 +8,10 @@ npm run build
 npm run serve
 http://localhost:3000/
 ===
+запустить фронт с rust-embed
+cargo run -p ingress
+http://localhost:8001/
+===
 Бекенд Rust:
 запустить скрипт для тестирования:
 sh scripts/basic_test.sh
