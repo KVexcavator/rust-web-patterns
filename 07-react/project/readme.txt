@@ -1,3 +1,5 @@
+https://github.com/PacktPublishing/Rust-Web-Programming-3E
+===
 Фронтенд React:
 https://esbuild.github.io/getting-started/#install-esbuild
 cd frontend
