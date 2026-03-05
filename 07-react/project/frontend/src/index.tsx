@@ -24,7 +24,7 @@ const App = () => {
 
     return (
         <div>
-            <h1> Barbambia </h1>
+            <h1> Barbambia-kergudyu </h1>
             {error ? (
                 <div style={{ color: 'red' }}>Error: {error}</div> // Display error if present
             ) : data ? (

@@ -5,6 +5,7 @@ cd $SCRIPTPATH/../..
 
 # rebuild frontend
 cd frontend
+rm -rf public/bundle.js public/bundle.js.map
 npm install
 npm run build
 

@@ -42,18 +42,22 @@ fn serve_frontend_asset(path: String) -> HttpResponse {
 // fn serve_frontend_asset(path: String) -> HttpResponse {
 //     let file = match Path::new(&path).file_name() {
 //         Some(file) => file.to_str().unwrap(),
-//         None => return HttpResponse::BadRequest()
-//                                     .body("404 Not Found")
+//         None => return HttpResponse::BadRequest().body("404 Not Found"),
 //     };
+
 //     match FrontendAssets::get(file) {
-//         Some(content) => HttpResponse::Ok()
-//             .content_type(mime_guess::from_path(&file)
-//             .first_or_octet_stream().as_ref())
-//             .append_header(
-//                 ("Cache-Control", "public, max-age=604800")
-//             )
-//             .body(content.data),
-//         None => HttpResponse::NotFound().body("404 Not Found")
+//         Some(content) => {
+//             let content_type = mime_guess::from_path(&file)
+//                 .first_or_octet_stream()
+//                 .as_ref()
+//                 .to_string();
+
+//             HttpResponse::Ok()
+//                 .append_header(("Content-Type", content_type))
+//                 .append_header(("Cache-Control", "public, max-age=604800"))
+//                 .body(content.data)
+//         }
+//         None => HttpResponse::NotFound().body("404 Not Found"),
 //     }
 // }
 

@@ -1,4 +1,5 @@
-https://github.com/PacktPublishing/Rust-Web-Programming-3E
+чистить браузер
+Ctrl + Shift + R
 ===
 Фронтенд React:
 https://esbuild.github.io/getting-started/#install-esbuild
