@@ -1,3 +1,4 @@
+import "./App.css";
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
 import getAll from './api/get';

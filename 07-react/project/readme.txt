@@ -1,5 +1,6 @@
 чистить браузер
 Ctrl + Shift + R
+dev/prod serve_frontend_asset -> ingress/src/main.rs
 ===
 Фронтенд React:
 https://esbuild.github.io/getting-started/#install-esbuild
