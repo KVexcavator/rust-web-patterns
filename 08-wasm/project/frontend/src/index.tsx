@@ -1,3 +1,5 @@
+import init, { rust_generate_button_text } from
+'../rust-interface/pkg/rust_interface.js';
 import "./App.css";
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
@@ -8,7 +10,22 @@ import { CreateToDoItem } from './components/CreateItemForm';
 
 const App = () => {
     const [data, setData] = useState(null);
-    const [error, setError] = useState(null); // State to store error messages
+    const [error, setError] = useState(null);
+    const [wasmReady, setWasmReady] = useState<boolean>(false);
+    const [
+        RustGenerateButtonText,
+        setRustGenerateButtonText
+    ] = useState<(input: string) => string>(null);
+
+    React.useEffect(() => {
+        init().then(() => {
+            setRustGenerateButtonText(() => rust_generate_button_text);
+            setWasmReady(true);
+        }).catch(e => console.error(
+            "Error initializing WASM: ", e
+        ));
+    }, []);
+
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -21,8 +38,10 @@ const App = () => {
             }
         };
         
-        fetchData();
-    }, []);
+        if (wasmReady) {
+            fetchData();
+        }
+    }, [wasmReady]);
 
     function reRenderItems(response: any) {
         if (response.error) {
@@ -59,8 +78,10 @@ const App = () => {
                             <ToDoItem 
                                 key={item.title + item.status}
                                 title={item.title}
-                                status={item.status}
                                 id={item.id}
+                                buttonMessage={
+                                    RustGenerateButtonText(item.status)
+                                }
                                 passBackResponse={reRenderItems}
                             />
                         </>
@@ -73,8 +94,10 @@ const App = () => {
                             <ToDoItem 
                                 key={item.title + item.status}
                                 title={item.title}
-                                status={item.status}
                                 id={item.id}
+                                buttonMessage={
+                                    RustGenerateButtonText(item.status)
+                                }
                                 passBackResponse={reRenderItems}
                             />
                         </>
