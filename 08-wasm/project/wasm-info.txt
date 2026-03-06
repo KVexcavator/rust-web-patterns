@@ -1,0 +1,71 @@
+WASM - WebAssembly
+для компилирования программ в байт-код для последующего из запуска виртуальной машиной или интерпретатором, например в песочнице для кода(стандарты Bytecode Alliance)
+---
+Для Rust нужны либы
+wasm-pack: https://drager.github.io/wasm-pack/installer/
+wabt: https://github.com/WebAssembly/wabt
+и крейт
+wasm-bindgen: https://rustwasm.github.io/docs/wasm-bindgen/examples/hello-world.html
+---
+установка на Ubuntu 22.04:
+```bash
+cargo install wasm-pack
+wasm-pack --version
+```
+обычно бинарник будет здесь:
+```
+~/.cargo/bin/wasm-pack
+```
+если команда не находится добавить в PATH:
+```bash
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+---
+```bash
+sudo apt update
+sudo apt install wabt
+wasm2wat --version или wat2wasm --version
+```
+как добавить wasm target в Rust, без этого WebAssembly не соберётся:
+```bash
+rustup target add wasm32-unknown-unknown
+rustup target list --installed # проверка
+```
+должно быть: wasm32-unknown-unknown
+```
+тестовый проект:
+
+```bash
+cargo new wasm-test
+cd wasm-test
+cargo build --target wasm32-unknown-unknown
+```
+должен появиться файл: target/wasm32-unknown-unknown/debug/wasm_test.wasm
+```
+посмотреть его дизассемблированный вид:
+```bash
+wasm2wat target/wasm32-unknown-unknown/debug/wasm_test.wasm
+```
+===
+cargo new rust-interface --lib
+Запись в Cargo.toml: crate-type = ["cdylib"] означает динамическую библиотеку, она связывается с основной программой во время компиляции. Скомпилированная программа затем загружает динамическую библиотеку во время выполнения.
+===
+для постройки wasm на фронтенде
+```frontend/package.json
+{
+  ...
+  "scripts": {
+    ...
+    "wasm": "cd rust-interface && wasm-pack build --target web && cp pkg/rust_interface_bg.wasm ../public/rust_interface_bg.wasm",
+    "wasm-trace": "cd public && wasm2wat rust_interface_bg.wasm > rust_interface_bg.wat"
+  },
+  ....
+}
+
+```
+```
+npm run wasm
+npm run wasm-trace
+```
+===

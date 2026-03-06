@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+cd $SCRIPTPATH/../..
+
+# rebuild frontend
+cd frontend
+rm -rf public/bundle.js public/bundle.js.map
+npm install
+npm run build
+
+# rebuild and run ingress
+cd ../ingress
+cargo clean
+cargo run
